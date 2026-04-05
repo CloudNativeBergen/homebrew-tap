@@ -1,26 +1,26 @@
 class Cnctl < Formula
   desc "Organizer CLI for Cloud Native Days Norway"
   homepage "https://github.com/CloudNativeBergen/cnctl"
-  version "2026.04.05-60a73b8"
+  version "2026.04.05-d81a252"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-60a73b8/cnctl-aarch64-apple-darwin.tar.gz"
-      sha256 "b46c3a639eb3f62a3dc4cd5c685a67f30cd2d597cc2ec3271dec06759102e64d"
+      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-d81a252/cnctl-aarch64-apple-darwin.tar.gz"
+      sha256 "c1750cc2f1e7e8471bcde26b29a2519ca5518be948435ce2d2f5d81990d8591d"
     else
-      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-60a73b8/cnctl-x86_64-apple-darwin.tar.gz"
-      sha256 "acfb4dfb6756d51f322f8dc99da0b6339d394b28f52bdb5f1644a9f8826aa411"
+      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-d81a252/cnctl-x86_64-apple-darwin.tar.gz"
+      sha256 "662cec1035cb65068e16e614d524f0bde2d253d9ba29b8b40ea9560b5f904eb3"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-60a73b8/cnctl-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "92f8c979b9766adbf8112fa5ce7dd6d0485141ae5221439ba31fc3b7a8e87725"
+      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-d81a252/cnctl-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "f5a8e46da0b89d65369f0f2f05035db6b9547210c768f1821f984ddbf82fba87"
     else
-      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-60a73b8/cnctl-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "729abf853d106983412f6549bc5097a86b34083a74586e956ce23074743683ab"
+      url "https://github.com/CloudNativeBergen/cnctl/releases/download/2026.04.05-d81a252/cnctl-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "a514e7c1c482c73b3242418e77669835e297d52efec092c0ab2472714b0a3a56"
     end
   end
 
