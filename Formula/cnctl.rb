@@ -29,6 +29,6 @@ class Cnctl < Formula
   end
 
   test do
-    assert_match "cnctl", shell_output("#{bin}/cnctl --version")
+    assert_match version.to_s, shell_output("#{bin}/cnctl --version")
   end
 end
