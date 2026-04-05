@@ -1,0 +1,74 @@
+name: Update formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+jobs:
+  update:
+    name: Update cnctl formula
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Write formula
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+          MAC_ARM_SHA: ${{ github.event.client_payload.mac_arm }}
+          MAC_X86_SHA: ${{ github.event.client_payload.mac_x86 }}
+          LINUX_ARM_SHA: ${{ github.event.client_payload.linux_arm }}
+          LINUX_X86_SHA: ${{ github.event.client_payload.linux_x86 }}
+        run: |
+          cat > Formula/cnctl.rb << 'FORMULA'
+          class Cnctl < Formula
+            desc "Organizer CLI for Cloud Native Days Norway"
+            homepage "https://github.com/CloudNativeBergen/cnctl"
+            version "VERSION_PLACEHOLDER"
+            license "MIT"
+
+            on_macos do
+              if Hardware::CPU.arm?
+                url "https://github.com/CloudNativeBergen/cnctl/releases/download/VERSION_PLACEHOLDER/cnctl-aarch64-apple-darwin.tar.gz"
+                sha256 "MAC_ARM_PLACEHOLDER"
+              else
+                url "https://github.com/CloudNativeBergen/cnctl/releases/download/VERSION_PLACEHOLDER/cnctl-x86_64-apple-darwin.tar.gz"
+                sha256 "MAC_X86_PLACEHOLDER"
+              end
+            end
+
+            on_linux do
+              if Hardware::CPU.arm?
+                url "https://github.com/CloudNativeBergen/cnctl/releases/download/VERSION_PLACEHOLDER/cnctl-aarch64-unknown-linux-gnu.tar.gz"
+                sha256 "LINUX_ARM_PLACEHOLDER"
+              else
+                url "https://github.com/CloudNativeBergen/cnctl/releases/download/VERSION_PLACEHOLDER/cnctl-x86_64-unknown-linux-gnu.tar.gz"
+                sha256 "LINUX_X86_PLACEHOLDER"
+              end
+            end
+
+            def install
+              bin.install "cnctl"
+            end
+
+            test do
+              assert_match version.to_s, shell_output("#{bin}/cnctl --version")
+            end
+          end
+          FORMULA
+
+          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/g" Formula/cnctl.rb
+          sed -i "s/MAC_ARM_PLACEHOLDER/${MAC_ARM_SHA}/g" Formula/cnctl.rb
+          sed -i "s/MAC_X86_PLACEHOLDER/${MAC_X86_SHA}/g" Formula/cnctl.rb
+          sed -i "s/LINUX_ARM_PLACEHOLDER/${LINUX_ARM_SHA}/g" Formula/cnctl.rb
+          sed -i "s/LINUX_X86_PLACEHOLDER/${LINUX_X86_SHA}/g" Formula/cnctl.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/cnctl.rb
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "chore: update cnctl to ${{ github.event.client_payload.version }}"
+          git push
